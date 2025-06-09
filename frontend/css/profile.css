@@ -1,0 +1,137 @@
+/* profile.css */
+
+/* Grundlegende Stile und Hintergrund */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  /* Exakter Gradient aus dem Bild nachgebaut */
+  background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 69, 0, 0.45) 0%,
+      rgba(255, 127, 80, 0) 60%
+    ),
+    #fcf8f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #1a1a1a;
+}
+
+.card-container {
+  position: relative;
+}
+
+/* Die Haupt-ID-Karte */
+.id-card {
+  background-color: #edeae7;
+  border-radius: 18px;
+  width: 90vw;
+  max-width: 680px; /* Breite angepasst für besseres Layout */
+  padding: 25px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e0e0e0;
+}
+
+.card-content {
+  display: grid;
+  /* Verhältnis angepasst, um dem Bild zu entsprechen */
+  grid-template-columns: 1fr 1.7fr;
+  gap: 25px;
+  align-items: flex-start; /* Am Anfang der Zelle ausrichten */
+  position: relative;
+  z-index: 2; /* Inhalt liegt über dem Wasserzeichen */
+}
+
+/* Linke Spalte: Foto */
+.photo-section {
+  border-right: 1.5px dashed #c0c0c0;
+  padding-right: 25px;
+  text-align: center;
+}
+
+.photo-section img {
+  width: 100%;
+  border-radius: 6px; /* Leichte Anpassung der Rundung */
+  display: block;
+}
+
+.photo-footer {
+  font-family: 'Space Mono', monospace;
+  margin-top: 15px;
+  font-size: 16px; /* Angepasst für Lesbarkeit */
+  font-weight: 700;
+  color: #1a1a1a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px; /* Kleiner Innenabstand */
+}
+
+.photo-footer .symbol {
+  font-size: 24px;
+}
+
+/* Rechte Spalte: Infos */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Elemente verteilen sich besser */
+  gap: 35px; /* Abstand zwischen den Feldern */
+  padding-top: 5px;
+}
+
+.logo {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 10px 15px;
+  font-weight: 900;
+  font-size: 24px;
+  letter-spacing: -1px;
+  line-height: 1.1; /* Zeilenhöhe für den Zeilenumbruch */
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.info-field {
+  border-bottom: 1.5px solid #1a1a1a; /* Dunklere, passende Linie */
+  padding-bottom: 8px;
+}
+
+.info-field .main-info {
+  margin: 0 0 4px 0;
+  font-family: 'Inter', sans-serif; /* Geändert von Space Mono */
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.info-field .name {
+  font-size: 40px; /* Größer für den Namen */
+}
+
+.info-field .role {
+  font-size: 24px; /* Etwas kleiner für die Rolle */
+}
+
+.info-field .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #666;
+  font-weight: 700;
+}
+
+/* Wasserzeichen im Hintergrund */
+.identity-watermark {
+  position: absolute;
+  bottom: -20px;
+  right: 25px;
+  font-size: 110px;
+  font-weight: 900; /* Viel dicker, wie im Bild */
+  color: rgba(0, 0, 0, 0.04); /* Subtiler */
+  z-index: 1; /* Liegt hinter dem Inhalt */
+  font-family: 'Inter', sans-serif; /* Passendere Schriftart */
+  user-select: none;
+}

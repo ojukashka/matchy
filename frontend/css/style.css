@@ -1,0 +1,154 @@
+/* public/style.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0e6d2;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  width: 90%;
+  max-width: 1400px;
+  height: 80vh;
+  gap: 20px;
+}
+
+.card {
+  flex: 1;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sektionen-spezifische Stile */
+.anim-card {
+  background-color: #e0e0e0;
+}
+.vfx-card {
+  background-color: #000000;
+  color: #fff;
+}
+.color-card {
+  background-color: #f7c5d0;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 2rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 0.9em;
+}
+
+.card-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-content img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.card-footer span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-footer h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 7vw; /* Skaliert mit der Fensterbreite */
+  margin: 0;
+  line-height: 1;
+  color: #fff;
+  -webkit-text-stroke: 2px black; /* Outline für den Text */
+}
+
+.vfx-card .card-footer h2 {
+  color: #fff;
+  -webkit-text-stroke: 0;
+}
+.color-card .card-footer h2 {
+  color: #fff;
+  -webkit-text-stroke: 2px #c19ca7;
+}
+
+/* Formular-Stile */
+.form-container {
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-container h1 {
+  margin-bottom: 20px;
+}
+
+.form-container input {
+  width: 90%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container button {
+  width: 95%;
+  padding: 12px;
+  border: none;
+  background-color: #c19ca7;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.form-container button:hover {
+  background-color: #4a54c4;
+}
+
+#logout-button {
+  margin-top: 20px;
+  background-color: #f44336;
+}
+#logout-button:hover {
+  background-color: #d32f2f;
+}

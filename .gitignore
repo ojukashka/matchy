@@ -1,0 +1,15 @@
+# Ordner für Abhängigkeiten (wird über 'npm install' neu erstellt)
+/backend/node_modules
+
+# Datei für Umgebungsvariablen (enthält sensible Daten wie API-Keys)
+/backend/.env
+
+# Log-Dateien
+*.log
+npm-debug.log*
+
+# Systemdateien von macOS
+.DS_Store
+
+# Systemdateien von Windows
+Thumbs.db
