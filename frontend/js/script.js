@@ -71,26 +71,123 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
 
     // Holt die Daten vom Backend
+    // HINZUFÜGEN: Füllt das Update-Formular mit den vorhandenen Daten
+    function prefillUpdateForm(userData) {
+      const usernameInput = document.getElementById('update-username');
+      const emailInput = document.getElementById('update-email');
+      if (usernameInput && emailInput) {
+        usernameInput.value = userData.username;
+        emailInput.value = userData.email;
+      }
+    }
+
     async function fetchProfileData(token) {
       try {
         const response = await fetch(`${API_URL}/profile`, {
           method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-
         if (!response.ok) {
           localStorage.clear();
-          window.location.href = '../pages/login.html'; // KORRIGIERTER PFAD
+          window.location.href = '/pages/login.html'; // KORRIGIERTER PFAD
           return;
         }
-
         const userData = await response.json();
         displayProfileData(userData);
+        prefillUpdateForm(userData); // <-- DIESE ZEILE HINZUFÜGEN
       } catch (error) {
         console.error('Fehler beim Abrufen der Profildaten:', error);
       }
+    }
+
+    // HINZUFÜGEN: LOGIK FÜR PROFIL-AKTUALISIERUNG (PUT)
+    const updateProfileForm = document.getElementById('update-profile-form');
+    if (updateProfileForm) {
+      updateProfileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('update-username').value;
+        const email = document.getElementById('update-email').value;
+        const token = localStorage.getItem('token');
+
+        try {
+          const res = await fetch(`${API_URL}/profile`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ username, email }),
+          });
+          const updatedUser = await res.json();
+          if (res.ok) {
+            alert('Profil erfolgreich aktualisiert!');
+            displayProfileData(updatedUser); // UI mit neuen Daten aktualisieren
+            localStorage.setItem('username', updatedUser.username);
+          } else {
+            throw new Error(updatedUser.message);
+          }
+        } catch (error) {
+          alert(`Fehler bei der Aktualisierung: ${error.message}`);
+        }
+      });
+    }
+
+    // HINZUFÜGEN: LOGIK FÜR KONTO-LÖSCHUNG (DELETE)
+    const deleteAccountButton = document.getElementById(
+      'delete-account-button'
+    );
+    if (deleteAccountButton) {
+      deleteAccountButton.addEventListener('click', async () => {
+        if (
+          confirm(
+            'Bist du sicher, dass du deinen Account dauerhaft löschen möchtest?'
+          )
+        ) {
+          const token = localStorage.getItem('token');
+          try {
+            const res = await fetch(`${API_URL}/profile`, {
+              method: 'DELETE',
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const data = await res.json();
+            if (res.ok) {
+              alert('Dein Account wurde erfolgreich gelöscht.');
+              localStorage.clear();
+              window.location.href = '/';
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (error) {
+            alert(`Fehler beim Löschen des Accounts: ${error.message}`);
+          }
+        }
+      });
+    }
+
+    // HINZUFÜGEN: LOGIK FÜR EXTERNE API (The Bored API)
+    const getHobbyButton = document.getElementById('get-hobby-button');
+    if (getHobbyButton) {
+      getHobbyButton.addEventListener('click', async () => {
+        const hobbySuggestionDiv = document.getElementById('hobby-suggestion');
+        hobbySuggestionDiv.innerHTML = '<p>Suche nach einer Idee...</p>';
+        try {
+          const response = await fetch(
+            'https://www.boredapi.com/api/activity/'
+          );
+          const data = await response.json();
+          if (!response.ok) throw new Error('Netzwerk-Antwort war nicht ok.');
+
+          hobbySuggestionDiv.innerHTML = `
+                <h3>Vorschlag: ${data.activity}</h3>
+                <p><strong>Typ:</strong> ${data.type}</p>
+                <p><strong>Benötigte Teilnehmer:</strong> ${data.participants}</p>
+            `;
+        } catch (error) {
+          hobbySuggestionDiv.innerHTML =
+            '<p>Vorschlag konnte nicht geladen werden.</p>';
+          console.error('Fehler bei Hobby-Abruf:', error);
+        }
+      });
     }
 
     // Schreibt die empfangenen Daten ins HTML

@@ -92,6 +92,43 @@ app.get('/api/profile', auth, async (req, res) => {
   }
 });
 
+// HINZUFÜGEN: Route zur Aktualisierung des Benutzerprofils (PUT)
+app.put('/api/profile', auth, async (req, res) => {
+  try {
+    const { username, email } = req.body;
+    // Finde den Benutzer über die ID aus dem JWT und aktualisiere ihn
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.userId,
+      { username, email },
+      { new: true } // Diese Option gibt das aktualisierte Dokument zurück
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+    }
+    res.json(updatedUser);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Fehler beim Aktualisieren des Profils.', error });
+  }
+});
+
+// HINZUFÜGEN: Route zur Löschung des Benutzerprofils (DELETE)
+app.delete('/api/profile', auth, async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.user.userId);
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden.' });
+    }
+    res.json({ message: 'Benutzer erfolgreich gelöscht.' });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Fehler beim Löschen des Benutzers.', error });
+  }
+});
+
 // Startseite ausliefern (z.B. index.html in /pages)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/pages/index.html'));
