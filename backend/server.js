@@ -24,23 +24,55 @@ mongoose
   .catch((err) => console.error('Verbindung zu MongoDB fehlgeschlagen:', err));
 
 // --- User Schema und Model ---
+// ÄNDERN: User Schema und Model erweitern
 const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  username: { type: String, required: true, unique: true }, //
+  email: { type: String, required: true, unique: true }, //
+  password: { type: String, required: true }, //
+  // HINZUFÜGEN: Neue Felder für das dynamische Profil
+  fullName: { type: String, default: 'Vollständiger Name' },
+  role: { type: String, default: 'Rolle/Job' },
+  location: { type: String, default: 'Wohnort' },
+  hobbies: { type: String, default: 'Hobbies (z.B. Gaming, Lesen)' },
+  profilePictureUrl: { type: String, default: 'https://i.pravatar.cc/300' }, // Standard-Platzhalter
 });
+
 const User = mongoose.model('User', UserSchema);
 
 // --- API Routen ---
+// ÄNDERN: API Route für die Registrierung
 app.post('/api/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
-    await newUser.save();
-    res.status(201).json({ message: 'Benutzer erfolgreich registriert.' });
+    // HINZUFÜGEN: Neue Felder aus dem request body auslesen
+    const {
+      username,
+      email,
+      password,
+      fullName,
+      role,
+      location,
+      hobbies,
+      profilePictureUrl,
+    } = req.body; //
+
+    const hashedPassword = await bcrypt.hash(password, 10); //
+
+    // HINZUFÜGEN: Neue Felder beim Erstellen des Benutzers übergeben
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      fullName,
+      role,
+      location,
+      hobbies,
+      profilePictureUrl: profilePictureUrl || 'https://i.pravatar.cc/300', // Fallback, falls URL leer ist
+    });
+    await newUser.save(); //
+
+    res.status(201).json({ message: 'Benutzer erfolgreich registriert.' }); //
   } catch (error) {
-    res.status(500).json({ message: 'Fehler bei der Registrierung.', error });
+    res.status(500).json({ message: 'Fehler bei der Registrierung.', error }); //
   }
 });
 
